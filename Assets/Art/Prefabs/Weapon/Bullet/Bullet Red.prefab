@@ -94,10 +94,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69cd6471ad7a3c46ac0685bdf92e0b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
-  lifeTime: 0.5
-  distance: 0.5
-  damage: 1
+  speed: 20
+  lifeTime: 2
+  distance: 0
+  damage: 3
   whatIsSolid:
     serializedVersion: 2
     m_Bits: 256
+  deathEffeck: {fileID: 9200905776387519626, guid: 8da713d68b5b2174da98b59c3d39a654,
+    type: 3}

@@ -8,7 +8,14 @@ public class Bullet : MonoBehaviour
     public float damage;            // Повреждения которую наносит пуля.
     public LayerMask whatIsSolid;   // Что пуля будет считать твёрдым телом? 
 
-    // public GameObject deathEffeck;   // Ссылка на эффект.
+    public GameObject deathEffeck;   // Ссылка на эффект.
+
+    [SerializeField] private bool enemyBullet; // патроны которыми стреляют враги
+
+    private void Start()
+    {
+        Invoke("DestroyBullet()", lifeTime);
+    }
 
     private void Update()
     {
@@ -16,17 +23,26 @@ public class Bullet : MonoBehaviour
 
         if (hitInfo.collider != null)
         {
+            // Если игрок попал по врагу
             if (hitInfo.collider.CompareTag("Enemy"))
             {
-                // Эффект после сметри.
-                //Instantiate(deathEffeck, transform.position, Quaternion.identity);
-
-                // Applay Damage !
                 hitInfo.collider.GetComponent<Enemy>().TakeDanage(damage);
             }
-            Destroy(gameObject);
+
+            // Если враг попал по игроку
+            if (hitInfo.collider.CompareTag("Player") && enemyBullet)
+            {
+                hitInfo.collider.GetComponent<CharacterController>().ChangeHealth(-damage);
+            }
+            DestroyBullet();
         }
 
         transform.Translate(Vector2.up * speed * Time.deltaTime);
+    }
+
+    public void DestroyBullet()
+    {
+        Instantiate(deathEffeck, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

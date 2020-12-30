@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         player = FindObjectOfType<CharacterController>();
-        narmalSpeed = speed;
+        //narmalSpeed = speed;
     }
 
     private void Update()
@@ -45,7 +45,18 @@ public class Enemy : MonoBehaviour
         }
 
         // Направление движение врага.
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        //transform.Translate(Vector2.right * speed * Time.deltaTime);
+
+     
+        if(transform.position.x > player.transform.position.x)
+        {
+            // разварот на 180 градусов
+            transform.eulerAngles = new Vector3(0, 180, 0);
+        }
+        else transform.eulerAngles = new Vector3(0, 0, 0); // смотрит на право.
+
+        //движение за игроком.
+        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
     }
 
 
@@ -69,8 +80,9 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void OnEnemyAttack()
     {
-        Instantiate(deadEffect, player.transform.position, Quaternion.identity);
-        player.healt -= damage;
+        player.ChangeHealth(-damage);
+        //Instantiate(deadEffect, player.transform.position, Quaternion.identity);
+        //player.healt -= damage;
         timeBtwAttack = startTimeBtwAttack;
     }
 

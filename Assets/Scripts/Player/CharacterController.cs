@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [AddComponentMenu(menuName: "Character/Controllers/CharacterController")]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -31,6 +33,11 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public void ChangeHealth(float applyDamage)
+    {
+        healt += applyDamage; // Отнимаем здоровье
+    }
+
     private void Update()
     {
         if (controlType == ControlType.PC)                                                          // Если игрок выбрал контроллер для PC
@@ -61,6 +68,12 @@ public class CharacterController : MonoBehaviour
         else if (isFacingRight && moveInput.x > 0)                                                   // Если мы смотрим в право то идём в лево.
         {
             Flip();
+        }
+
+        // Перезагрузка сцены после смерти.
+        if (healt <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
