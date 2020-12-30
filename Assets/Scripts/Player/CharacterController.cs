@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour
     private Vector2 moveVelosity;                                                                   // Итоговая скорость игрока.
 
     private bool isFacingRight = false;                                                             // Если игрок смотрит в право false.
-
+    public float healt = 4;
 
     private void Start()
     {
@@ -54,11 +54,11 @@ public class CharacterController : MonoBehaviour
             anim.SetBool("IsRunning", false);                                                       // Включаем анимацию бега.
         }
 
-        if (!isFacingRight && moveInput.x > 0)                                                       // Если мы смотрим в лево то идём в право.
+        if (!isFacingRight && moveInput.x < 0)                                                       // Если мы смотрим в лево то идём в право.
         {
             Flip();
         }
-        else if (isFacingRight && moveInput.x < 0)                                                   // Если мы смотрим в право то идём в лево.
+        else if (isFacingRight && moveInput.x > 0)                                                   // Если мы смотрим в право то идём в лево.
         {
             Flip();
         }
