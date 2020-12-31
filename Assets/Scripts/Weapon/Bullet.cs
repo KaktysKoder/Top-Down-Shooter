@@ -5,7 +5,7 @@ public class Bullet : MonoBehaviour
     public float speed;             // Скорость пули
     public float lifeTime;          // Время существования патрона.
     public float distance;          // Дистанция на которую летит патрон.
-    public float damage;            // Повреждения которую наносит пуля.
+    public int damage;            // Повреждения которую наносит пуля.
     public LayerMask whatIsSolid;   // Что пуля будет считать твёрдым телом? 
 
     public GameObject deathEffeck;   // Ссылка на эффект.

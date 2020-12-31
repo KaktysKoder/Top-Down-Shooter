@@ -365,7 +365,8 @@ MonoBehaviour:
   startStopTime: 0.8
   narmalSpeed: 3
   player: {fileID: 0}
-  deadEffect: {fileID: 0}
+  deadEffect: {fileID: 4694715315165104091, guid: c20f59d712d98ec4b9df7fd179d8ff35,
+    type: 3}
 --- !u!95 &3557061086129041057
 Animator:
   serializedVersion: 3

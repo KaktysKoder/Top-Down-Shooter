@@ -1,26 +1,33 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 [AddComponentMenu(menuName: "Character/Controllers/CharacterController")]
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterController : MonoBehaviour
 {
-    [Header("Please set refs.")]
+    [Header("Controls =======================================")]
     public Joystick joystic;                                                                        // Ссылка на joystic.
     public ControlType controlType;                                                                 // Тип контроллера.
-    [Space]
-    [Header("Set in Inspector.")]
-    [SerializeField] private float moveSpeed;                                                       // Скорость движения.
+    public float moveSpeed;                                                                         // Скорость движения.
+
+    [Header("Health =======================================")]
+    public float healt = 4;
+    public GameObject potionEffect;                                                                 // Эффект при подборе зелья.
+    public Text healthText;
+
+    [Header("Shield =======================================")]
+    public GameObject shield;                                                                       // Эффект при подборе щита. (Включает защиту игрока.)
+    public GameObject shildEffect;                                                                  // Эффект при подборе щита.
+    public Shield shieldTimer;                                                                           // Ссылка на таймер щита.
 
     private Rigidbody2D rb2D;                                                                       // Ссылка на компонент Rigidbody2D.
     private Animator anim;                                                                          // Ссылка на аниматор игрока.
-
     private Vector2 moveInput;                                                                      // Направление движение.
     private Vector2 moveVelosity;                                                                   // Итоговая скорость игрока.
 
     private bool isFacingRight = false;                                                             // Если игрок смотрит в право false.
-    public float healt = 4;
 
     private void Start()
     {
@@ -31,11 +38,24 @@ public class CharacterController : MonoBehaviour
         {
             joystic.gameObject.SetActive(false);                                                    // Отключаем jpystic
         }
+
+        shield.SetActive(false);
     }
 
-    public void ChangeHealth(float applyDamage)
+    public void ChangeHealth(int healthValue)
     {
-        healt += applyDamage; // Отнимаем здоровье
+        // Получаем урон только если щит не активен или же если щит активен но мы получаем не урон а хилимся.
+        // [shield.activeInHierarchy && healthValue > 0] подбор бонусов
+        if (!shield.activeInHierarchy || shield.activeInHierarchy && healthValue > 0)
+        {
+            healt += healthValue;               // Отнимаем здоровье
+            healthText.text = $"HP: {healt}";   // Отображаем Current health in Display.
+        }
+        else if (shield.activeInHierarchy && healthValue < 0)
+        {
+            shieldTimer.ReduceTimer(healthValue);
+        }
+
     }
 
     private void Update()
@@ -93,5 +113,36 @@ public class CharacterController : MonoBehaviour
         scale.x *= -1;                          // scale.x =  scale.x * -1; Умножая x на -1 происходить разварот спрайта.
 
         transform.localScale = scale;           // В локальный скейл this объекта присваиваем новый (вычисленный скейл).
+    }
+
+    // Подбор зелий.
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Potion"))
+        {
+            // TODO: убрать магические числа.
+            ChangeHealth(5);
+            Instantiate(potionEffect, other.transform.position, Quaternion.identity);
+            Destroy(other.gameObject);
+        }
+        else if (other.CompareTag("Shield"))
+        {
+            // Стаки щитов
+            if (!shield.activeInHierarchy)
+            {
+                Instantiate(shildEffect, other.transform.position, Quaternion.identity);
+
+                shield.SetActive(true);
+                shieldTimer.gameObject.SetActive(true); // активируем объект таймера
+                shieldTimer.isCooldown = true;
+
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                shieldTimer.ResrtTimet(); // Reset time
+                Destroy(other.gameObject);
+            }
+        }
     }
 }

@@ -101,5 +101,6 @@ MonoBehaviour:
   whatIsSolid:
     serializedVersion: 2
     m_Bits: 256
-  deathEffeck: {fileID: 9200905776387519626, guid: 8da713d68b5b2174da98b59c3d39a654,
+  deathEffeck: {fileID: 4694715315165104091, guid: c20f59d712d98ec4b9df7fd179d8ff35,
     type: 3}
+  enemyBullet: 0

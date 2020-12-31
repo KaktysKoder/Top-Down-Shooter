@@ -5,7 +5,7 @@ public class Enemy : MonoBehaviour
 
     private float timeBtwAttack;          // перезарядка, которая позволит изменять скорость атаки.
     public float startTimeBtwAttack;
-    public float damage;
+    public int damage;
 
     public float health; // Здоровье врага.
     public float speed;
