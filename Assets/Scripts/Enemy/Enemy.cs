@@ -2,6 +2,7 @@
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject floatingDamage;
 
     private float timeBtwAttack;          // перезарядка, которая позволит изменять скорость атаки.
     public float startTimeBtwAttack;
@@ -47,8 +48,8 @@ public class Enemy : MonoBehaviour
         // Направление движение врага.
         //transform.Translate(Vector2.right * speed * Time.deltaTime);
 
-     
-        if(transform.position.x > player.transform.position.x)
+
+        if (transform.position.x > player.transform.position.x)
         {
             // разварот на 180 градусов
             transform.eulerAngles = new Vector3(0, 180, 0);
@@ -91,5 +92,10 @@ public class Enemy : MonoBehaviour
         stopTime = startStopTime;
         Instantiate(deadEffect, transform.position, Quaternion.identity);
         health -= damage;
+        // На этой позиции будет появиляться floating damage
+        Vector2 damagePos = new Vector2(transform.position.x, transform.position.y + 2.75f);
+        Instantiate(floatingDamage, damagePos, Quaternion.identity);
+        // Damage который будет вылетать
+        floatingDamage.GetComponentInChildren<FloatingDamage>().damage = damage;
     }
 }

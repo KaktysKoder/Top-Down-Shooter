@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 [AddComponentMenu(menuName: "Character/Controllers/CharacterController")]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -21,6 +22,11 @@ public class CharacterController : MonoBehaviour
     public GameObject shield;                                                                       // Эффект при подборе щита. (Включает защиту игрока.)
     public GameObject shildEffect;                                                                  // Эффект при подборе щита.
     public Shield shieldTimer;                                                                           // Ссылка на таймер щита.
+
+    [Header("Weapons =======================================")]
+    public List<GameObject> unlockedWeapons;                                                         // Разблокированные пушки
+    public GameObject[] allWeapons;                                                                  // Массив из всех видов оружия.
+    public Image imageWeapon;                                                                        // Активная на UI Иконка оружия.
 
     private Rigidbody2D rb2D;                                                                       // Ссылка на компонент Rigidbody2D.
     private Animator anim;                                                                          // Ссылка на аниматор игрока.
@@ -95,6 +101,12 @@ public class CharacterController : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        // Переключение оружия на Q 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SwitchWeapon();
+        }
     }
 
     private void FixedUpdate()
@@ -113,6 +125,34 @@ public class CharacterController : MonoBehaviour
         scale.x *= -1;                          // scale.x =  scale.x * -1; Умножая x на -1 происходить разварот спрайта.
 
         transform.localScale = scale;           // В локальный скейл this объекта присваиваем новый (вычисленный скейл).
+    }
+
+    public void SwitchWeapon()
+    {
+        for (int i = 0; i < unlockedWeapons.Count; i++)
+        {
+            // Если разблокированная пушка активна то мы её выключаем.
+            if (unlockedWeapons[i].activeInHierarchy)
+            {
+                unlockedWeapons[i].SetActive(false);
+
+                if (i != 0) // Если эта пушка не нулевая в списке.
+                {
+                    // То мы включаем пушку которая идёт на 1 раньше.
+                    unlockedWeapons[i - 1].SetActive(true);
+                    imageWeapon.sprite = unlockedWeapons[i - 1].GetComponent<SpriteRenderer>().sprite;
+                }
+                else
+                {
+                    // Активация последней пушки
+                    unlockedWeapons[unlockedWeapons.Count - 1].SetActive(true);
+                    imageWeapon.sprite = unlockedWeapons[unlockedWeapons.Count - 1].GetComponent<SpriteRenderer>().sprite;
+                }
+
+                imageWeapon.SetNativeSize();
+                break;
+            }
+        }
     }
 
     // Подбор зелий.
@@ -143,6 +183,23 @@ public class CharacterController : MonoBehaviour
                 shieldTimer.ResrtTimet(); // Reset time
                 Destroy(other.gameObject);
             }
+        }
+        else if (other.CompareTag("Weapon"))
+        {
+            for (int i = 0; i < allWeapons.Length; i++)
+            {
+                // Если имя пушки которую мы подобрали == совподает с именем пушки из массива то
+                if (other.name == allWeapons[i].name)
+                {
+                    // Разблокируем. Можем теперь на неё переключаться.
+                    unlockedWeapons.Add(allWeapons[i]);
+                }
+            }
+            // Новую пушку взяли и сразу же на неё переключились.
+            SwitchWeapon();
+            Destroy(other.gameObject);
+
+
         }
     }
 }

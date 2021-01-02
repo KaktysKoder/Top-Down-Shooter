@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Potion
   - Shield
+  - Weapon
+  - Block
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - 
   - Solid
   - Player
-  - 
+  - PostProcessing
   - 
   - 
   - 
@@ -43,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Weapon
+    uniqueID: 301377203
     locked: 0

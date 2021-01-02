@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9667bdc14d202cf46908468d5285ad1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floatingDamage: {fileID: 0}
   startTimeBtwAttack: 1
   damage: 3
   health: 25
