@@ -9,8 +9,8 @@ public class Wall : MonoBehaviour
         if (other.CompareTag("Block"))
         {
             // 2 спавна так как стена из 2х блоков
-            Instantiate(block, transform.GetChild(0).position, Quaternion.identity);
-            Instantiate(block, transform.GetChild(1).position, Quaternion.identity);
+            Instantiate(block, transform.GetChild(0).GetChild(1).GetChild(0).position, Quaternion.identity);
+            Instantiate(block, transform.GetChild(0).GetChild(1).GetChild(1).position, Quaternion.identity);
 
             Destroy(gameObject);
         }
