@@ -100,7 +100,7 @@ MonoBehaviour:
   damage: 3
   whatIsSolid:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
   deathEffeck: {fileID: 4694715315165104091, guid: c20f59d712d98ec4b9df7fd179d8ff35,
     type: 3}
   enemyBullet: 1
